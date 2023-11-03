@@ -7,24 +7,28 @@ const {
 } = require("@jest/globals");
 const { User, Deck, Card, Attack } = require("./index");
 const { db } = require("../db/config");
-require("./../db/seed");
+//require("./../db/seed");
+const { seed } = require("../db/seed");
 // define in global scope
 let deck;
 
 // clear db and create new user before tests
 beforeAll(async () => {
     await db.sync({ force: true });
+    await seed();
     deck = await Deck.create({ name: "masters", xp: 20 });
 });
 
 // clear db after tests
-afterAll(async () => await db.sync({ force: true }));
+//afterAll(async () => await db.sync({ force: true }));
 
 describe("Deck", () => {
     test("has id, name, xp properties", async () => {
         expect(deck).toHaveProperty("id");
         expect(deck.name).toBe("masters");
+        expect(typeof deck.name).toBe("string");
         expect(deck.xp).toBe(20);
+        expect(typeof deck.xp).toBe("number");
         expect(deck instanceof Deck).toBeTruthy();
     });
 

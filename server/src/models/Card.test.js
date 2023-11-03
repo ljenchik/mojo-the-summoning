@@ -7,7 +7,8 @@ const {
 } = require("@jest/globals");
 const { User, Card, Deck, Attack } = require("./index");
 const { db } = require("../db/config");
-require("./../db/seed");
+//require("./../db/seed");
+const { seed } = require("../db/seed");
 
 // define in global scope
 let card;
@@ -15,24 +16,20 @@ let card;
 // clear db and create new user before tests
 beforeAll(async () => {
     await db.sync({ force: true });
-    card = await Card.create({
-        name: "mighty",
-        mojo: 20,
-        stamina: 100,
-        imgUrl: "image",
-    });
+    await seed();
 });
 
 // clear db after tests
-afterAll(async () => await db.sync({ force: true }));
+//afterAll(async () => await db.sync({ force: true }));
 
 describe("Card", () => {
     test("card has id, name, mojo, stamina, imgUrl", async () => {
+        const card = await Card.findByPk(1);
         expect(card).toHaveProperty("id");
-        expect(card.name).toBe("mighty");
-        expect(card.mojo).toBe(20);
-        expect(card.stamina).toBe(100);
-        expect(card.imgUrl).toBe("image");
+        expect(typeof card.name).toBe("string");
+        expect(typeof card.mojo).toBe("number");
+        expect(typeof card.stamina).toBe("number");
+        expect(typeof card.imgUrl).toBe("string");
         expect(card instanceof Card).toBeTruthy();
     });
 
