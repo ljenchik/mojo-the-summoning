@@ -7,7 +7,7 @@ class Attack extends Model {}
 // Defines a table User inside db
 Attack.init(
     {
-        id: { type: DataTypes.INTEGER, primaryKey: true },
+        //id: { type: DataTypes.INTEGER, primaryKey: true },
         title: DataTypes.STRING,
         mojoCost: DataTypes.INTEGER,
         staminaCost: DataTypes.INTEGER,

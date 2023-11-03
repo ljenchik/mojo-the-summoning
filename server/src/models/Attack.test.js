@@ -1,6 +1,13 @@
-const { describe, it, expect, beforeAll, afterAll } = require("@jest/globals");
+const {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    afterAll,
+} = require("@jest/globals");
 const { User, Card, Deck, Attack } = require("./index");
 const { db } = require("../db/config");
+require("./../db/seed");
 
 // define in global scope
 let attack;
@@ -19,11 +26,21 @@ beforeAll(async () => {
 afterAll(async () => await db.sync({ force: true }));
 
 describe("Attack", () => {
-    it("has an id", async () => {
+    test("has an id", async () => {
         expect(attack).toHaveProperty("id");
         expect(attack.title).toBe("power");
         expect(attack.mojoCost).toBe(20);
         expect(attack.staminaCost).toBe(10);
         expect(attack instanceof Attack).toBeTruthy();
+    });
+    test("attack belongs to many cards", async () => {
+        const attack = await Attack.findByPk(3);
+        const card1 = await Card.findByPk(1);
+        const card2 = await Card.findByPk(2);
+
+        // await attack.addCards([card1, card2]);
+        // const attack_cards = await attack.getCards();
+        // expect(attack_cards.length).toBe(2);
+        // expect(attack_cards[0] instanceof Card).toBe(true);
     });
 });

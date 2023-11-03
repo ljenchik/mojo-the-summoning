@@ -7,7 +7,7 @@ class User extends Model {}
 // Defines a table User inside db
 User.init(
     {
-        id: { type: DataTypes.INTEGER, primaryKey: true },
+        //id: { type: DataTypes.INTEGER, primaryKey: true },
         username: DataTypes.STRING,
     },
     {

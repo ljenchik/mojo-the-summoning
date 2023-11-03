@@ -7,7 +7,7 @@ class Card extends Model {}
 // Defines a table User inside db
 Card.init(
     {
-        id: { type: DataTypes.INTEGER, primaryKey: true },
+        //id: { type: DataTypes.INTEGER, primaryKey: true },
         name: DataTypes.STRING,
         mojo: DataTypes.INTEGER,
         stamina: DataTypes.INTEGER,

@@ -1,6 +1,13 @@
-const { describe, it, expect, beforeAll, afterAll } = require("@jest/globals");
-const { User, Deck, findCreateFind, Attack } = require("./index");
+const {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    afterAll,
+} = require("@jest/globals");
+const { User, Deck, Card, Attack } = require("./index");
 const { db } = require("../db/config");
+require("./../db/seed");
 
 // define in global scope
 let user;
@@ -15,9 +22,25 @@ beforeAll(async () => {
 afterAll(async () => await db.sync({ force: true }));
 
 describe("User", () => {
-    it("has an id", async () => {
+    test("has id and correct username", async () => {
         expect(user).toHaveProperty("id");
         expect(user.username).toBe("gandalf");
         expect(user instanceof User).toBeTruthy();
+    });
+
+    test("user owns a deck", async () => {
+        const deck = await Deck.create({ name: "the matrix", xp: 5 });
+        await user.setDeck(deck);
+        const userWithDeck = await User.findOne({
+            where: { username: "gandalf" },
+            include: Deck,
+        });
+        expect(userWithDeck).toEqual(
+            expect.objectContaining({
+                Deck: expect.objectContaining({
+                    name: "the matrix",
+                }),
+            })
+        );
     });
 });
